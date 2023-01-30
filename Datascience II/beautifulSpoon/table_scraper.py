@@ -1,21 +1,7 @@
-from functools import reduce
 from bs4 import BeautifulSoup, Tag
 from typing import List, Tuple, Dict, Union
 import pandas as pd
 from requests import get
-
-
-def getPage(url: str) -> str:
-    """Get the content of a web page given its url.
-    
-    Arguments:
-        url {str} -- The url of the web page to retrieve.
-    
-    Returns:
-        str -- The content of the web page.
-    """
-    return get(url).text
-
 
 def get_tables(url: str) -> List[Tag]:
     """Get all the tables in a web page.
@@ -26,7 +12,8 @@ def get_tables(url: str) -> List[Tag]:
     Returns:
         List[Tag] -- The list of tables in the web page.
     """
-    return BeautifulSoup(getPage(url), 'lxml').find_all('table')
+    response = get(url).text
+    return BeautifulSoup(response, 'lxml').find_all('table')
 
 
 def exmaineThead(table: Tag) -> Tuple[Dict[str, List[Tuple[int, str]]], List[Tuple[int, str]]]:
@@ -41,12 +28,8 @@ def exmaineThead(table: Tag) -> Tuple[Dict[str, List[Tuple[int, str]]], List[Tup
             - A list of single column labels.
     """
     # Get all header cells in the table.
-    ths =  list(
-        filter(
-            lambda h: h.find('img') == None and h.find('p') == None, 
-            table.find_all('th')
-        )
-    )
+    ths =  [ h  for h in table.find_all('th')
+            if h.find('img') == None and h.find('p') == None ]
     
     # Define a function to check if a header cell belongs to a group.
     is_group = lambda tag: tag.has_attr(
@@ -56,7 +39,7 @@ def exmaineThead(table: Tag) -> Tuple[Dict[str, List[Tuple[int, str]]], List[Tup
     groups = list(filter(is_group, ths))
     
     # Get all single header cells.
-    labels = enumerate(filter(lambda h: not is_group(h), ths))
+    labels = enumerate((h for h in ths if not is_group(h)),0)
     
     # Get the number of groups.
     num_of_groups = len(groups)
