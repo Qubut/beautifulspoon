@@ -1,13 +1,13 @@
 [tool.poetry]
-name = "beautifulspoon"
+name = "suppenlöffel"
 version = "0.2.5"
 description = "beautifulsoup is a library build upon bs4 to provide fast webscrapin"
 authors = ["Qubut <s-aahmed@haw-landshut.de>"]
 license = "MIT"
 readme = "README.md"
 classifiers = [
-    "Development Status :: 2 - Pre-Alpha",
-    "Natural Language :: English",
+   "Software Development :: Libraries :: Python Modules",
+    "Text Processing :: Markup :: HTML",
     "Operating System :: OS Independent",
 ]
 include = [
