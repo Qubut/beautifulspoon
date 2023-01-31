@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup, Tag
-from typing import List, Tuple, Dict, Union
+from typing import List, Tuple, Dict
 import pandas as pd
 from requests import get
 
