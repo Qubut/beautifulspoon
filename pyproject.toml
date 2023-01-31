@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "suppenlöffel"
+name = "suppenloeffel"
 version = "0.2.5"
-description = "beautifulsoup is a library build upon bs4 to provide fast webscrapin"
+description ="suppenlöffel is a library build upon bs4 to provide fast webscraping scripting experience"
 authors = ["Qubut <s-aahmed@haw-landshut.de>"]
 license = "MIT"
 readme = "README.md"
