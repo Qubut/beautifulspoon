@@ -1,13 +1,17 @@
 [tool.poetry]
-name = "beautifulsoup4"
-version = "0.2.0"
+name = "beautifulspoon"
+version = "0.2.5"
 description = "beautifulsoup is a library build upon bs4 to provide fast webscrapin"
 authors = ["Qubut <s-aahmed@haw-landshut.de>"]
+license = "MIT"
 readme = "README.md"
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Natural Language :: English",
     "Operating System :: OS Independent",
+]
+include = [
+    "LICENSE",
 ]
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -16,8 +20,6 @@ matplotlib = "^3.5.2"
 numpy = "^1.23.0"
 autopep8 = "^1.6.0"
 pandas = "^1.5.3"
-jupyter = "^1.0.0"
-ipykernel = "^6.20.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

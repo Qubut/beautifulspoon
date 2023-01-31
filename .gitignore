@@ -2,3 +2,5 @@ __pycache__/*.pyc
 .ipynb_checkpoints
 Untitled.ipynb
 __pycache__/__init__.py
+dist
+!dist/.gitkeep
