@@ -124,7 +124,6 @@ def create_dfs(table: Tag) -> Union[Dict[str, pd.DataFrame], pd.DataFrame]:
         selection = [data[i] for i in indices]
         df.loc[df.shape[0]] = selection
         return (ds[0], df) if isinstance(ds, Tuple) else df
-
     clean = lambda strings: [string[:-2] for string in strings]
     for group in groups.items():
         fill_dfs(group)
