@@ -17,7 +17,7 @@ def get_tables(url: str) -> List[Tag]:
     return BeautifulSoup(response, 'lxml').find_all('table')
 
 
-def examineThead(table: Tag) -> Tuple[Dict[str, List[Tuple[int, str]]], List[Tuple[int, str]]]:
+def examine_thead(table: Tag) -> Tuple[Dict[str, List[Tuple[int, str]]], List[Tuple[int, str]]]:
     """Examine the header of a table.
 
     Arguments:
@@ -84,18 +84,48 @@ def get_rows(table: Tag) -> List[Tag]:
 
 
 def create_dfs(table: Tag) -> pd.DataFrame:
-    groups, individuals = examineThead(table)
+    """
+    Given a BeautifulSoup tag representing an HTML table, extract its data and create a Pandas dataframe.
+    This function assumes that the table has a header row that defines the columns.
+
+    :param table: A BeautifulSoup tag representing an HTML table.
+    :return: A Pandas dataframe with the data from the table.
+    """
+
+    # Call the examine_thead function to extract the header information from the table.
+    # The function returns two variables:
+    # - groups: a dictionary that maps column labels to tuples containing information about the columns they group
+    # - individuals: a list of tuples, each containing information about a single, ungrouped column
+    groups, individuals = examine_thead(table)
+
+    # Create a list of tuples to represent the individual columns.
     individual_items = [(None, [(None, individual)])
                         for individual in individuals]
+
+    # Combine the groups and individual columns into one list of tuples.
     column_labels = list(groups.items()) + individual_items
+
+    # For each column label, extract its name and position.
+    # Then, create a string representation of the column label in the format "name:position".
     cols = [f"{col[1] if not isinstance(col[1],tuple) else col[1][1]}:{col[0] if col[0] else col[1][0]}" for _,
             cols in column_labels for col in cols]
+
+    # Sort the columns based on their position.
     cols.sort(key=lambda a: int(a.split(':')[1]))
+
+    # Extract the names of the columns from their string representation.
     columns = [c.split(':')[0] for c in cols]
+
+    # Use BeautifulSoup to extract the data from the table's rows.
+    # Remove any empty rows, and store the remaining data in a list.
     data = [l for l in [[c.get_text(strip=r'\s') for c in row.find_all('td')]
             for row in get_rows(table)] if l]
+
+    # Create a Pandas dataframe from the data and columns.
     df = pd.DataFrame(columns=columns, data=data)
+
+    # If the table has grouped columns, concatenate the dataframes for each group into one large dataframe.
+    # The dataframes are concatenated along the columns axis, and the group labels are used as multi-level index.
     if not groups:
         return df
     return pd.concat([df.iloc[:, (val[0] for val in l)]for l in groups.values()], keys=groups.keys(), axis=1)
-
