@@ -1,10 +1,14 @@
 [tool.poetry]
-name = "datascience ii"
-version = "0.1.0"
-description = "Dies  sind alle Praktika von dem Kurs Datascience II Sommer 2022"
+name = "beautifulsoup4"
+version = "0.2.0"
+description = "beautifulsoup is a library build upon bs4 to provide fast webscrapin"
 authors = ["Qubut <s-aahmed@haw-landshut.de>"]
 readme = "README.md"
-
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+]
 [tool.poetry.dependencies]
 python = "^3.10"
 beautifulsoup4 = "^4.11.1"
