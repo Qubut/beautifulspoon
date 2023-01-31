@@ -6,8 +6,8 @@ authors = ["Qubut <s-aahmed@haw-landshut.de>"]
 license = "MIT"
 readme = "README.md"
 classifiers = [
-   "Software Development :: Libraries :: Python Modules",
-    "Text Processing :: Markup :: HTML",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Markup :: HTML ",
     "Operating System :: OS Independent",
 ]
 include = [
