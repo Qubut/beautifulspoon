@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "suppenloeffel"
+name = "suppenloffel"
 version = "0.2.5.1"
 description ="suppenlöffel is a library build upon bs4 to provide fast webscraping scripting experience"
 authors = ["Qubut <s-aahmed@haw-landshut.de>"]
