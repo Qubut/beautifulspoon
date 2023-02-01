@@ -95,7 +95,7 @@ class TableScrapper:
         return table.find_all("tr")
 
     @classmethod
-    def create_dfs(cls, table: Tag) -> pd.DataFrame:
+    def create_df(cls, table: Tag) -> pd.DataFrame:
         """
         Given a BeautifulSoup tag representing an HTML table, extract its data and create a Pandas dataframe.
         This function assumes that the table has a header row that defines the columns.
@@ -111,19 +111,13 @@ class TableScrapper:
         groups, individuals = cls.__examine_thead(table)
 
         # Create a list of tuples to represent the individual columns.
-        individual_items = [(None, [(None, individual)]) for individual in individuals]
+        individual_items = [[individual] for individual in individuals]
 
         # Combine the groups and individual columns into one list of tuples.
-        column_labels = list(groups.items()) + individual_items
-
+        column_labels = individual_items + list(groups.values())
         # For each column label, extract its name and position.
         # Then, create a string representation of the column label in the format "name:position".
-        cols = [
-            f"{col[1] if not isinstance(col[1],tuple) else col[1][1]}:{col[0] if col[0] else col[1][0]}"
-            for _, cols in column_labels
-            for col in cols
-        ]
-
+        cols = [f"{col[1]}:{col[0]}" for cols in column_labels for col in cols]
         # Sort the columns based on their position.
         cols.sort(key=lambda a: int(a.split(":")[1]))
 
@@ -143,13 +137,18 @@ class TableScrapper:
 
         # Create a Pandas dataframe from the data and columns.
         df = pd.DataFrame(columns=columns, data=data)
-
+        
         # If the table has grouped columns, concatenate the dataframes for each group into one large dataframe.
         # The dataframes are concatenated along the columns axis, and the group labels are used as multi-level index.
+        # Then add the single columns to the dataframe
         if not groups:
             return df
-        return pd.concat(
-            [df.iloc[:, (val[0] for val in l)] for l in groups.values()],
+        _df = pd.concat(
+            [  df.iloc[:, (gr_info[0] for gr_info in gr)]for gr in groups.values()],    
+            
             keys=groups.keys(),
             axis=1,
         )
+        for i in individuals:
+            _df[i[1]] = df.iloc[:,i[0]]         
+        return _df
